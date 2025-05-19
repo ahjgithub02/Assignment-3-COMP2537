@@ -44,3 +44,19 @@ button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.game-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-header h1 {
+    text-align: center;
+}
+
+.settings-panel {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: space-between;
+}
