@@ -23,18 +23,25 @@ $('#start-btn').on('click', () => {
 $('#reset-btn').on('click', resetGame);
 $('#power-up-btn').on('click', triggerPowerUp);
 
+$(document).ready(function () {
+  $('#power-up-btn').hide().prop('disabled', true);
+  $('#pause-btn').prop('disabled', true);
+});
+
 function startGame(difficulty) {
-  $('#game-over-popup').hide();
-  $('#game-message').hide();
+
+  let isPaused = false;
   clickCount = 0;
   matchCount = 0;
   powerUpsLeft = 3;
+
+  $('#pause-btn').text('⏸ Pause').prop('disabled', false);
+  $('#power-up-btn').text(`Power-Up (${powerUpsLeft})`).prop('disabled', false);
   updateStats();
 
   totalPairs = difficultyMap[difficulty];
   timeLeft = getTimeForDifficulty(difficulty);
   $('#game-grid').empty();
-  $('#power-up-btn').text(`Power-Up (${powerUpsLeft})`).prop('disabled', false);
 
   fetch('https://pokeapi.co/api/v2/pokemon?limit=1500')
     .then(res => res.json())
@@ -47,16 +54,17 @@ function startGame(difficulty) {
       const cards = [];
       pokemonDetails.forEach(pokemon => {
         const id = pokemon.id;
-        const imgUrl = 
-          pokemon.sprites?.other?.['official-artwork']?.front_default || 
-          pokemon.sprites?.other?.home?.front_default || 
-          pokemon.sprites?.front_default || 
-          'placeholder.png';
-    
+        const imgUrl =
+          pokemon.sprites?.other?.['official-artwork']?.front_default ||
+          pokemon.sprites?.other?.home?.front_default ||
+          pokemon.sprites?.front_default ||
+          '/images/placeholder.png';
+
         cards.push(createCardElement(id, imgUrl));
         cards.push(createCardElement(id, imgUrl));
       });
       shuffle(cards).forEach(card => $('#game-grid').append(card));
+      $('#power-up-btn').show();
       setup();
       startTimer();
     })
@@ -130,13 +138,24 @@ function updateStats() {
   $('#timer').text(`Time: ${timeLeft}s`);
 }
 
-function pickRandomUnique(arr, n) {
+function pickRandomUnique(allPokemon, totalPairs) {
   const result = [];
   const taken = new Set();
-  while (result.length < n) {
-    const randIndex = Math.floor(Math.random() * arr.length);
+
+  const validPokemon = allPokemon.filter(p => {
+    const id = parseInt(p.url.split('/').slice(-2, -1)[0]);
+    return id <= 1025;
+  });
+
+  if (validPokemon.length < totalPairs) {
+    console.error(`Only ${validPokemon.length} Pokémon have valid artwork. Reduce pairs or retry.`);
+    return [];
+  }
+
+  while (result.length < totalPairs) {
+    const randIndex = Math.floor(Math.random() * validPokemon.length);
     if (!taken.has(randIndex)) {
-      result.push(arr[randIndex]);
+      result.push(validPokemon[randIndex]);
       taken.add(randIndex);
     }
   }
@@ -162,19 +181,28 @@ function startTimer() {
 }
 
 function showWinMessage() {
-  $('#game-message').removeClass('hidden');
-  $('#message-text').text("You Win!");
-}
-
-function showGameOver() {
-  $('.card').off('click');
-  $('#game-over-popup').show();
-}
-
-function resetGame() {
   clearInterval(timerInterval);
-  startGame(difficulty);
+  $('#game-message').html(`
+    <h2>You Win! 🎉</h2>
+    <p>Matches: ${matchCount}/${totalPairs}</p>
+    <button id="restart-btn">Play Again</button>
+  `).show();
+  $('.card').off('click');
 }
+
+
+// Updated showGameOver()
+function showGameOver() {
+  clearInterval(timerInterval);
+  $('#game-over-popup').html(`
+    <h2>Time's Up! 😞</h2>
+    <p>Matched ${matchCount}/${totalPairs} pairs</p>
+    <button id="restart-btn">Try Again</button>
+  `).show();
+  $('.card').off('click');
+}
+
+$(document).on('click', '#restart-btn', resetGame);
 
 function getTimeForDifficulty(level) {
   switch (level) {
@@ -208,4 +236,63 @@ function triggerPowerUp() {
       }
     });
   }, 2000);
+}
+
+// Updated pause functionality
+$('#pause-btn').on('click', function () {
+  if ($('#game-grid').is(':empty')) return;
+
+  isPaused = !isPaused;
+  $(this).text(isPaused ? '▶ Resume' : '⏸ Pause');
+
+  if (isPaused) {
+    clearInterval(timerInterval);
+    $('.card').off('click');
+  } else {
+    startTimer();
+    setup();
+  }
+});
+
+// Updated quit functionality
+$('#back-btn').on('click', function () {
+  if ($('#game-grid').is(':empty')) return;
+
+  if (confirm('Are you sure you want to quit? Your progress will be lost.')) {
+    clearInterval(timerInterval);
+    $('#game-grid').empty();
+    $('#game-over-popup').hide();
+    $('#game-message').hide();
+    $('#power-up-btn').hide();
+    $('#pause-btn').text('⏸ Pause').prop('disabled', true);
+
+    // Reset stats display
+    clickCount = 0;
+    matchCount = 0;
+    updateStats();
+  }
+});
+
+function resetGame() {
+  if (matchCount > 0 && !confirm('Reset current game?')) return;
+  clearInterval(timerInterval);
+  $('#game-grid').empty();
+  $('#game-over-popup').hide();
+  $('#game-message').hide();
+
+  // Reset game state
+  clickCount = 0;
+  matchCount = 0;
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+  isPaused = false;
+
+  // Update UI
+  updateStats();
+  $('#pause-btn').text('⏸ Pause').prop('disabled', true);
+  $('#power-up-btn').hide();
+
+  // Restart with current difficulty
+  startGame(difficulty);
 }
