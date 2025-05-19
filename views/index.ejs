@@ -13,9 +13,13 @@
   <main class="game-container">
     <!-- Status Bar -->
     <section id="status-bar" class="status-bar">
-      <p>Clicks: <span id="click-count">0</span></p>
-      <p>Matched: <span id="pairs-matched">0</span> / <span id="total-pairs">0</span></p>
-      <p>Time Left: <span id="time-left">60</span>s</p>
+      <div id="click-count">Clicks: 0</div>
+      <div id="match-count">Matches: 0</div>
+      <div id="timer">Time: 60s</div>
+      <div id="game-over-popup" style="display:none;">
+        <p>Game Over!</p>
+        <button id="reset-btn">Reset</button>      
+      </div>    
     </section>
 
     <!-- Game Board -->
