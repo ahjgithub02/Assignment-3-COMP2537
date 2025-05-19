@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pokémon Memory Match</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body class="<%= theme || 'light-theme' %>">
+  <%- include('partials/header') %>
+
+  <main class="game-container">
+    <!-- Status Bar -->
+    <section id="status-bar" class="status-bar">
+      <p>Clicks: <span id="click-count">0</span></p>
+      <p>Matched: <span id="pairs-matched">0</span> / <span id="total-pairs">0</span></p>
+      <p>Time Left: <span id="time-left">60</span>s</p>
+    </section>
+
+    <!-- Game Board -->
+    <div id="game-grid"></div>
+
+    <!-- Game Messages -->
+    <div id="game-message" class="hidden">
+      <h2 id="message-text"></h2>
+      <button id="play-again-btn">Play Again</button>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+  <script src="/js/index.js"></script>
+</body>
+</html>
