@@ -1,38 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pokémon Memory Match</title>
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+
 <body class="<%= theme || 'light-theme' %>">
   <%- include('partials/header') %>
 
-  <main class="game-container">
-    <!-- Status Bar -->
-    <section id="status-bar" class="status-bar">
-      <div id="click-count">Clicks: 0</div>
-      <div id="match-count">Matches: 0</div>
-      <div id="timer">Time: 60s</div>
-      <div id="game-over-popup" style="display:none;">
-        <p>Game Over!</p>
-        <button id="reset-btn">Reset</button>      
-      </div>    
-    </section>
+    <main class="game-container">
+      <!-- Status Bar -->
+      <section id="status-bar" class="status-bar">
+        <div id="click-count">Clicks: 0</div>
+        <div id="match-count">Matches: 0</div>
+        <div id="timer">Time: 60s</div>
+        <div id="game-over-popup" style="display:none;">
+          <p>Game Over!</p>
+          <button id="reset-btn">Reset</button>
+        </div>
+      </section>
 
-    <!-- Game Board -->
-    <div id="game-grid"></div>
+      <!-- Game Board -->
+      <div id="game-grid"></div>
+      
+      <!-- Winner Popup (hidden by default) -->
+      <div id="game-message" class="hidden">
+        <p id="message-text"></p>
+        <button id="play-again-btn">Play Again</button>
+      </div>
 
-    <!-- Game Messages -->
-    <div id="game-message" class="hidden">
-      <h2 id="message-text"></h2>
-      <button id="play-again-btn">Play Again</button>
-    </div>
-  </main>
+      <!-- Game Over Popup (hidden by default) -->
+      <div id="game-over-popup" class="hidden">
+        <p id="game-over-text"></p>
+        <button id="restart-btn">Try Again</button>
+      </div>
+    </main>
 
-  <%- include('partials/footer') %>
-  <script src="/js/index.js"></script>
+    <%- include('partials/footer') %>
+      <script src="/js/index.js"></script>
 </body>
+
 </html>

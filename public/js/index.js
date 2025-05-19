@@ -46,16 +46,23 @@ function startGame(difficulty) {
     .then(pokemonDetails => {
       const cards = [];
       pokemonDetails.forEach(pokemon => {
-        const imgUrl = pokemon.sprites.other['official-artwork'].front_default;
         const id = pokemon.id;
-        if (!imgUrl) return; // skip broken image
-
+        const imgUrl = 
+          pokemon.sprites?.other?.['official-artwork']?.front_default || 
+          pokemon.sprites?.other?.home?.front_default || 
+          pokemon.sprites?.front_default || 
+          'placeholder.png';
+    
         cards.push(createCardElement(id, imgUrl));
         cards.push(createCardElement(id, imgUrl));
       });
       shuffle(cards).forEach(card => $('#game-grid').append(card));
-      setup(); // bind click logic
+      setup();
       startTimer();
+    })
+    .catch(error => {
+      console.error("Failed to fetch Pokémon details:", error);
+      alert("Error loading Pokémon data. Please try again.");
     });
 }
 
