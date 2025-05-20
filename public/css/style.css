@@ -1,5 +1,66 @@
+body {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px; /* Adjust size as needed */
+    letter-spacing: 1px;
+}
+
+/* Light theme (Pokemon green theme) */
 .light-theme {
-    background-color: #00674F;
+    background-color: #B2FBA5; /* Lighter Pokemon green */
+    color: #212529;
+}
+
+/* Dark theme (Darker Pokemon green) */
+.dark-theme {
+    background-color: #2E7D32; /* Darker Pokemon green */
+    color: #f8f9fa;
+}
+
+/* Ensure text is readable on both themes */
+.light-theme .card,
+.light-theme .status-bar,
+.light-theme .settings-panel {
+    color: #212529;
+}
+
+.dark-theme .card,
+.dark-theme .settings-panel {
+    color: #f8f9fa;
+}
+
+/* Instructions Text */
+.dark-theme .instruction {
+    color: #f8f9fa;
+}
+
+/* Power Button Text */
+.dark-theme #power-up-btn {
+    color: #212529; /* Dark text for visibility */
+}
+
+/* Light Theme Status Bar */
+.light-theme .status-bar {
+    background-color: rgba(46, 125, 50, 0.3); /* 30% opacity of your dark green */
+    color: #212529; /* Dark text for contrast */
+    border-radius: 8px;
+    backdrop-filter: blur(2px); /* Optional subtle glass effect */
+}
+
+/* Dark Theme Status Bar */
+.dark-theme .status-bar {
+    background-color: rgba(178, 251, 165, 0.3); /* 30% opacity of your light green */
+
+    color: #f8f9fa; /* Light text */
+    border-radius: 8px;
+    backdrop-filter: blur(2px); /* Optional subtle glass effect */
+}
+
+/* Add this to make sure form controls look good in dark mode */
+.dark-theme .form-select,
+.dark-theme .form-control {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
 }
 
 .card {
@@ -62,15 +123,15 @@ button:disabled {
     display: flex;
     flex-direction: row;
     text-align: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
 }
 
 #game-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    max-width: 1200px;
+    gap: 15px;
+    max-width: 1000px;    
     margin: 0 auto;
     padding: 20px;
 }
@@ -83,7 +144,6 @@ button:disabled {
     cursor: pointer;
     overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s;
-    background-color: #f8f8f8;
 }
 
 .card-back {

@@ -27,11 +27,78 @@ $('#power-up-btn').on('click', triggerPowerUp);
 
 function showInitialInstructions() {
   $('#game-grid').html(`
-    <div class="instruction">
-      <p>1. Select difficulty</p>
-      <p>2. Click START to begin</p>
+    <div class="instruction text-center">
+        <p class="fs-5">1. Select difficulty</p>
+        <p class="fs-5">2. Click START to begin</p>
     </div>
-  `);
+`);
+}
+
+// Theme switching functionality
+$(document).ready(function() {
+  // Check for saved theme preference or use light as default
+  const savedTheme = localStorage.getItem('pokemonMemoryTheme') || 'light';
+  $('body').removeClass('light-theme dark-theme').addClass(`${savedTheme}-theme`);
+  $('#theme-select').val(savedTheme);
+
+  // Theme selector change handler
+  $('#theme-select').on('change', function() {
+      const selectedTheme = $(this).val();
+      $('body').removeClass('light-theme dark-theme').addClass(`${selectedTheme}-theme`);
+      localStorage.setItem('pokemonMemoryTheme', selectedTheme);
+      
+      // Update button colors based on theme
+      updateButtonStyles(selectedTheme);
+  });
+
+  // Initialize button styles
+  updateButtonStyles(savedTheme);
+});
+
+// Enhanced button styling function
+function updateButtonStyles(theme) {
+  if (theme === 'dark') {
+    // Start Button - Brighter Pokémon Green
+    $('#start-btn')
+      .removeClass('btn-success')
+      .addClass('btn-pokemon-green')
+      .css({
+        'background-color': '#66BB6A',
+        'border-color': '#66BB6A',
+        'color': 'white'
+      });
+    
+    // Power Button - Brighter Pokémon Yellow
+    $('#power-up-btn')
+      .removeClass('btn-warning')
+      .addClass('btn-pokemon-yellow')
+      .css({
+        'background-color': '#FFD600',
+        'border-color': '#FFD600',
+        'color': '#212529'
+      });
+    
+    // Reset Button
+    $('#reset-btn')
+      .removeClass('btn-secondary')
+      .addClass('btn-outline-light');
+
+  } else {
+    // Light theme - revert to defaults
+    $('#start-btn')
+      .removeClass('btn-pokemon-green')
+      .addClass('btn-success')
+      .css('background-color', '').css('border-color', '').css('color', '');
+    
+    $('#power-up-btn')
+      .removeClass('btn-pokemon-yellow')
+      .addClass('btn-warning')
+      .css('background-color', '').css('border-color', '').css('color', '');
+    
+    $('#reset-btn')
+      .removeClass('btn-outline-light')
+      .addClass('btn-secondary');
+  }
 }
 
 $(document).ready(function () {
@@ -39,7 +106,13 @@ $(document).ready(function () {
 
   showInitialInstructions();
 
-  $('#power-up-btn').hide().prop('disabled', true);
+  clickCount = 0;
+  matchCount = 0;
+  timeLeft = 60;
+  updateStats();
+
+  const currentTheme = localStorage.getItem('pokemonMemoryTheme') || 'light';
+  $('#power-up-btn').show().prop('disabled', true);
   $('#pause-btn').prop('disabled', true);
   $('#start-btn').prop('disabled', true);
   $('#reset-btn').prop('disabled', true);
@@ -60,6 +133,8 @@ async function startGame(difficulty) {
   clickCount = 0;
   matchCount = 0;
   powerUpsLeft = 3;
+
+  updateStats();
 
   $('#reset-btn').prop('disabled', false);
   $('#pause-btn').text('⏸ Pause').prop('disabled', false);
@@ -90,7 +165,6 @@ async function startGame(difficulty) {
       cards.push(createCardElement(id, imgUrl));
     });
     shuffle(cards).forEach(card => $('#game-grid').append(card));
-    $('#power-up-btn').show();
     setup();
     startTimer();
   } catch (error) {
@@ -160,9 +234,9 @@ function resetBoard() {
 }
 
 function updateStats() {
-  $('#click-count').text(`Clicks: ${clickCount}`);
-  $('#match-count').text(`Matches: ${matchCount}`);
-  $('#timer').text(`Time: ${timeLeft}s`);
+  $('#click-count').text(clickCount);
+  $('#match-count').text(matchCount);
+  $('#timer').text(timeLeft);
 }
 
 async function pickRandomUnique(allPokemon, totalPairs) {
@@ -214,17 +288,17 @@ function showWinMessage() {
   $('#power-up-btn').prop('disabled', true);
   $('#pause-btn').prop('disabled', true);
   $('#reset-btn').prop('disabled', true);
-
+  
   $('#game-grid').hide();
   $('#game-popup').html(`
-    <div class="popup-content">
-      <h2>You Win! 🎉</h2>
-      <p>Matched ${matchCount}/${totalPairs} pairs!</p>
-      <div class="popup-buttons">
-        <button id="try-again-btn">Try Again</button>
-        <button id="new-game-btn">New Game</button>
+      <div class="popup-content">
+          <h2 class="mb-3">You Win! 🎉</h2>
+          <p class="mb-4">Matched ${matchCount}/${totalPairs} pairs!</p>
+          <div class="popup-buttons d-flex gap-3 justify-content-center">
+              <button id="try-again-btn" class="btn btn-primary">Try Again</button>
+              <button id="new-game-btn" class="btn btn-secondary">New Game</button>
+          </div>
       </div>
-    </div>
   `).show();
 }
 
@@ -241,14 +315,14 @@ function showGameOver() {
 
   $('#game-grid').hide();
   $('#game-popup').html(`
-    <div class="popup-content">
-      <h2>Game Over! 😞</h2>
-      <p>Matched ${matchCount}/${totalPairs} pairs</p>
-      <div class="popup-buttons">
-        <button id="try-again-btn">Try Again</button>
-        <button id="new-game-btn">New Game</button>
+      <div class="popup-content">
+          <h2 class="mb-3">Game Over! 😞</h2>
+          <p class="mb-4">Matched ${matchCount}/${totalPairs} pairs</p>
+          <div class="popup-buttons d-flex gap-3 justify-content-center">
+              <button id="try-again-btn" class="btn btn-primary">Try Again</button>
+              <button id="new-game-btn" class="btn btn-secondary">New Game</button>
+          </div>
       </div>
-    </div>
   `).show();
 }
 
@@ -278,10 +352,11 @@ $(document).on('click', '#new-game-btn', function () {
 
   clickCount = 0;
   matchCount = 0;
+  timeLeft = 60;
   gameActive = false;
 
   updateStats();
-  $('#power-up-btn').hide().prop('disabled', true);
+  $('#power-up-btn').prop('disabled', true);
   $('#pause-btn').prop('disabled', true);
   $('#reset-btn').prop('disabled', true);
   $('#start-btn').prop('disabled', true);
@@ -345,7 +420,7 @@ $('#back-btn').on('click', function () {
     clearInterval(timerInterval);
     $('#game-popup').hide();
     $('#game-grid').html(`
-      <div class="instruction">
+      <div class="instruction text-center">
         <p>1. Select difficulty</p>
         <p>2. Click START to begin</p>
       </div>
@@ -353,7 +428,7 @@ $('#back-btn').on('click', function () {
 
     $('#difficulty').val('').prop('disabled', false).trigger('change');
 
-    $('#power-up-btn').hide().prop('disabled', true);
+    $('#power-up-btn').prop('disabled', true);
     $('#pause-btn').prop('disabled', true);
     $('#start-btn').prop('disabled', true);
     $('#reset-btn').prop('disabled', true);
@@ -361,6 +436,7 @@ $('#back-btn').on('click', function () {
 
     clickCount = 0;
     matchCount = 0;
+    timeLeft = 60;
     updateStats();
   }
 });
@@ -370,6 +446,11 @@ function resetGame() {
 
   if (confirm('Reset current game?')) {
     clearInterval(timerInterval);
+    clickCount = 0;
+    matchCount = 0;
+    timeLeft = getTimeForDifficulty(difficulty);
+    updateStats();
+    $('#power-up-btn').text(`Power-Up (${powerUpsLeft})`).prop('disabled', false);
     startGame(difficulty);
   }
 }
