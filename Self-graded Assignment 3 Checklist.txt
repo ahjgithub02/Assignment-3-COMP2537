@@ -15,7 +15,7 @@ Student Number: A01238000
 
 /7 marks
 [x]  Winning Event is implemented. If user clicks on all the cards, display a winning message.
-[]  Header is showing the number of clicks the user has made, and the number of pairs left, number of pairs matched, total number of pairs, and game timer.
+[x]  Header is showing the number of clicks the user has made, and the number of pairs left, number of pairs matched, total number of pairs, and game timer.
 [x]  Start and Reset buttons are added to the game.
 [x]  Difficulty levels are added to the game.
 [x]  Themes are added to the game.
