@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "node assignment3.js",
-    "dev": "nodemon assignment3.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "ejs": "^3.1.10",
