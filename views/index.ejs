@@ -25,19 +25,15 @@
       </section>
 
       <!-- Game Board -->
-      <div id="game-grid"></div>
-
-      <!-- Winner Popup (hidden by default) -->
-      <div id="game-message" style="display:none">
-        <p id="message-text"></p>
-        <button id="play-again-btn">Play Again</button>
+      <div id="game-grid">
+        <div class="instruction">
+          <p>1. Select difficulty</p>
+          <p>2. Click START to begin</p>
+        </div>
       </div>
 
-      <!-- Game Over Popup (hidden by default) -->
-      <div id="game-over-popup" style="display:none">
-        <p id="game-over-text"></p>
-        <button id="restart-btn">Try Again</button>
-      </div>
+      <div id="game-popup" style="display:none"></div>
+        
     </main>
 
     <%- include('partials/footer') %>
