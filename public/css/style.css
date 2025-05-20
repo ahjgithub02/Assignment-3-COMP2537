@@ -1,22 +1,19 @@
 body {
     font-family: 'Press Start 2P', cursive;
-    font-size: 16px; /* Adjust size as needed */
+    font-size: 16px;
     letter-spacing: 1px;
 }
 
-/* Light theme (Pokemon green theme) */
 .light-theme {
-    background-color: #B2FBA5; /* Lighter Pokemon green */
+    background-color: #B2FBA5;
     color: #212529;
 }
 
-/* Dark theme (Darker Pokemon green) */
 .dark-theme {
-    background-color: #2E7D32; /* Darker Pokemon green */
+    background-color: #2E7D32;
     color: #f8f9fa;
 }
 
-/* Ensure text is readable on both themes */
 .light-theme .card,
 .light-theme .status-bar,
 .light-theme .settings-panel {
@@ -28,34 +25,28 @@ body {
     color: #f8f9fa;
 }
 
-/* Instructions Text */
 .dark-theme .instruction {
     color: #f8f9fa;
 }
 
-/* Power Button Text */
 .dark-theme #power-up-btn {
-    color: #212529; /* Dark text for visibility */
+    color: #212529;
 }
 
-/* Light Theme Status Bar */
 .light-theme .status-bar {
-    background-color: rgba(46, 125, 50, 0.3); /* 30% opacity of your dark green */
-    color: #212529; /* Dark text for contrast */
+    background-color: rgba(46, 125, 50, 0.3);
+    color: #212529;
     border-radius: 8px;
-    backdrop-filter: blur(2px); /* Optional subtle glass effect */
+    backdrop-filter: blur(2px);
 }
 
-/* Dark Theme Status Bar */
 .dark-theme .status-bar {
-    background-color: rgba(178, 251, 165, 0.3); /* 30% opacity of your light green */
-
-    color: #f8f9fa; /* Light text */
+    background-color: rgba(178, 251, 165, 0.3);
+    color: #f8f9fa;
     border-radius: 8px;
-    backdrop-filter: blur(2px); /* Optional subtle glass effect */
+    backdrop-filter: blur(2px);
 }
 
-/* Add this to make sure form controls look good in dark mode */
 .dark-theme .form-select,
 .dark-theme .form-control {
     background-color: #333;
@@ -180,8 +171,6 @@ button:disabled {
     flex-direction: column;
     align-items: center;
 }
-
-
 
 @media (max-width: 768px) {
     .card {

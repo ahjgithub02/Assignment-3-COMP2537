@@ -18,11 +18,12 @@
   <%- include('partials/header') %>
 
   <main class="game-container container">
-    <!-- Status Bar -->
-    <section id="status-bar" class="status-bar row justify-content-center mb-4 p-3">
+
+    <section id="status-bar" class="status-bar row justify-content-center mb-4 p-3 rounded">
       <div class="col-auto">
         <span class="me-3"><strong>Clicks:</strong> <span id="click-count">0</span></span>
-        <span class="me-3"><strong>Matches:</strong> <span id="match-count">0</span></span>
+        <span class="me-3"><strong>Matched:</strong> <span id="match-count">0</span>/<span id="total-pairs">0</span></span>
+        <span class="me-3"><strong>Left:</strong> <span id="pairs-left">0</span></span>
         <span><strong>Time:</strong> <span id="timer">60</span>s</span>
       </div>
     </section>

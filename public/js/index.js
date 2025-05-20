@@ -34,31 +34,24 @@ function showInitialInstructions() {
 `);
 }
 
-// Theme switching functionality
 $(document).ready(function() {
-  // Check for saved theme preference or use light as default
   const savedTheme = localStorage.getItem('pokemonMemoryTheme') || 'light';
   $('body').removeClass('light-theme dark-theme').addClass(`${savedTheme}-theme`);
   $('#theme-select').val(savedTheme);
 
-  // Theme selector change handler
   $('#theme-select').on('change', function() {
       const selectedTheme = $(this).val();
       $('body').removeClass('light-theme dark-theme').addClass(`${selectedTheme}-theme`);
       localStorage.setItem('pokemonMemoryTheme', selectedTheme);
       
-      // Update button colors based on theme
       updateButtonStyles(selectedTheme);
   });
 
-  // Initialize button styles
   updateButtonStyles(savedTheme);
 });
 
-// Enhanced button styling function
 function updateButtonStyles(theme) {
   if (theme === 'dark') {
-    // Start Button - Brighter Pokémon Green
     $('#start-btn')
       .removeClass('btn-success')
       .addClass('btn-pokemon-green')
@@ -68,7 +61,6 @@ function updateButtonStyles(theme) {
         'color': 'white'
       });
     
-    // Power Button - Brighter Pokémon Yellow
     $('#power-up-btn')
       .removeClass('btn-warning')
       .addClass('btn-pokemon-yellow')
@@ -78,13 +70,11 @@ function updateButtonStyles(theme) {
         'color': '#212529'
       });
     
-    // Reset Button
     $('#reset-btn')
       .removeClass('btn-secondary')
       .addClass('btn-outline-light');
 
   } else {
-    // Light theme - revert to defaults
     $('#start-btn')
       .removeClass('btn-pokemon-green')
       .addClass('btn-success')
@@ -133,6 +123,7 @@ async function startGame(difficulty) {
   clickCount = 0;
   matchCount = 0;
   powerUpsLeft = 3;
+  totalPairs = difficultyMap[difficulty];
 
   updateStats();
 
@@ -142,7 +133,6 @@ async function startGame(difficulty) {
   $('#back-btn').prop('disabled', false);
   updateStats();
 
-  totalPairs = difficultyMap[difficulty];
   timeLeft = getTimeForDifficulty(difficulty);
   $('#game-grid').empty();
 
@@ -234,8 +224,12 @@ function resetBoard() {
 }
 
 function updateStats() {
+  const pairsLeft = totalPairs - matchCount;
+
   $('#click-count').text(clickCount);
   $('#match-count').text(matchCount);
+  $('#total-pairs').text(totalPairs);
+  $('#pairs-left').text(pairsLeft);
   $('#timer').text(timeLeft);
 }
 
@@ -292,7 +286,7 @@ function showWinMessage() {
   $('#game-grid').hide();
   $('#game-popup').html(`
       <div class="popup-content">
-          <h2 class="mb-3">You Win! 🎉</h2>
+          <h2 class="mb-3">🎉 You Win! 🎉</h2>
           <p class="mb-4">Matched ${matchCount}/${totalPairs} pairs!</p>
           <div class="popup-buttons d-flex gap-3 justify-content-center">
               <button id="try-again-btn" class="btn btn-primary">Try Again</button>
@@ -316,7 +310,7 @@ function showGameOver() {
   $('#game-grid').hide();
   $('#game-popup').html(`
       <div class="popup-content">
-          <h2 class="mb-3">Game Over! 😞</h2>
+          <h2 class="mb-3">😞 Game Over! 😞</h2>
           <p class="mb-4">Matched ${matchCount}/${totalPairs} pairs</p>
           <div class="popup-buttons d-flex gap-3 justify-content-center">
               <button id="try-again-btn" class="btn btn-primary">Try Again</button>
