@@ -43,6 +43,7 @@ $(document).ready(function () {
   $('#pause-btn').prop('disabled', true);
   $('#start-btn').prop('disabled', true);
   $('#reset-btn').prop('disabled', true);
+  $('#back-btn').prop('disabled', true);
 
   $('#difficulty').on('change', function () {
     if ($(this).val()) {
@@ -63,6 +64,7 @@ async function startGame(difficulty) {
   $('#reset-btn').prop('disabled', false);
   $('#pause-btn').text('⏸ Pause').prop('disabled', false);
   $('#power-up-btn').text(`Power-Up (${powerUpsLeft})`).prop('disabled', false);
+  $('#back-btn').prop('disabled', false);
   updateStats();
 
   totalPairs = difficultyMap[difficulty];
@@ -283,6 +285,7 @@ $(document).on('click', '#new-game-btn', function () {
   $('#pause-btn').prop('disabled', true);
   $('#reset-btn').prop('disabled', true);
   $('#start-btn').prop('disabled', true);
+  $('#back-btn').prop('disabled', true);
 });
 
 $(document).on('click', '#restart-btn', resetGame);
@@ -348,9 +351,13 @@ $('#back-btn').on('click', function () {
       </div>
     `).show();
 
+    $('#difficulty').val('').prop('disabled', false).trigger('change');
+
     $('#power-up-btn').hide().prop('disabled', true);
     $('#pause-btn').prop('disabled', true);
     $('#start-btn').prop('disabled', true);
+    $('#reset-btn').prop('disabled', true);
+    $('#back-btn').prop('disabled', true);
 
     clickCount = 0;
     matchCount = 0;

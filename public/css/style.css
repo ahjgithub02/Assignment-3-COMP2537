@@ -1,3 +1,7 @@
+.light-theme {
+    background-color: #00674F;
+}
+
 .card {
     position: relative;
     width: 100px;
@@ -58,7 +62,7 @@ button:disabled {
     display: flex;
     flex-direction: row;
     text-align: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 #game-grid {
@@ -104,6 +108,20 @@ button:disabled {
     transform: scale(1.03);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.status-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
 
 @media (max-width: 768px) {
     .card {
