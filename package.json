@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node asssignment3.js",
+    "start": "node assignment3.js",
     "dev": "nodemon assignment3.js"
   },
   "dependencies": {
